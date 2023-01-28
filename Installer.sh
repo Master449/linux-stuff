@@ -66,7 +66,7 @@ echo "                  Updating APT                    "
 echo "--------------------------------------------------"
 echo ""
 sleep 1s
-echo "apt update"
+apt update
 
 get-apt curl
 get-apt git
