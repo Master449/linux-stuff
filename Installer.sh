@@ -42,7 +42,7 @@ get-deb () {
 	sleep 1s
 	
 	wget -O $1.deb '$2'
-	dpkg -i discord.deb
+	dpkg -i $1.deb
 }
 
 echo "--------------------------------------------------"
