@@ -12,6 +12,7 @@ fi
 #
 #    It takes 1 arguement
 #      1: the apt package
+#      2: (optional) The repo that it is in
 #
 get-apt () {
 	echo ""
@@ -20,8 +21,14 @@ get-apt () {
 	echo "--------------------------------------------------"
 	echo ""
 	sleep 1s
-	
-	echo "apt-get install $1 -y"
+	if [ $# -eq 1 ]
+		then
+			echo "apt-get install $1 -y"
+		else
+			echo "add-apt-repository $2"
+			echo "apt update"
+			echo "apt-get install $1 -y"
+	fi
 }
 
 #
@@ -40,8 +47,15 @@ get-deb () {
 	echo "--------------------------------------------------"
 	echo ""
 	sleep 1s
-	
+
 	echo "wget -O $1.deb '$2'"
+
+echo ""
+	echo "--------------------------------------------------"
+	echo "                  Installing $1 "
+	echo "--------------------------------------------------"
+	echo ""
+	sleep 1s
 	echo "dpkg -i $1.deb"
 }
 
@@ -51,13 +65,13 @@ echo "  It may take a while depending on internet speed."
 echo "      The script will start in 10 seconds.        "
 echo "                CTRL + C to Abort                 "
 echo "--------------------------------------------------"
-sleep 7s
-echo "3"
-sleep 1s
-echo "2"
-sleep 1s
-echo "1"
-sleep 1s
+#sleep 7s
+#echo "3"
+#sleep 1s
+#echo "2"
+#sleep 1s
+#echo "1"
+#sleep 1s
 
 # apt 
 echo ""
@@ -68,6 +82,7 @@ echo ""
 sleep 1s
 echo "apt update"
 
+get-apt code "'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'"
 get-apt curl
 get-apt git
 get-apt gnome-tweaks

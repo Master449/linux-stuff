@@ -9,9 +9,10 @@ fi
 
 #
 #    This function is for apt packages
-#    It takes 1 arg
 #
+#    It takes 1 arguement
 #      1: the apt package
+#      2: (optional) The repo that it is in
 #
 get-apt () {
 	echo ""
@@ -20,10 +21,15 @@ get-apt () {
 	echo "--------------------------------------------------"
 	echo ""
 	sleep 1s
-	
-	apt-get install $1 -y
+	if [ $# -eq 1 ]
+		then
+			apt-get install $1 -y
+		else
+			add-apt-repository --yes $2
+			apt update
+			apt-get install $1 -y
+	fi
 }
-
 #
 #    This function is for deb packages
 #    These are for applications that I don't want hindered
@@ -68,6 +74,7 @@ echo ""
 sleep 1s
 apt update
 
+get-apt code "'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'"
 get-apt curl
 get-apt git
 get-apt gnome-tweaks
