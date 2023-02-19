@@ -12,13 +12,19 @@ QEMU Should be setup with the following:
 ```xml
 <hostdev mode="subsystem" type="pci" managed="yes">
   <source>
-    <address domain="0x0000" bus="0x03" slot="0x00" function="0x0"/>
+    <!--  Leave the Usual Stuff -->
   </source>
   <rom file="/usr/share/vgabios/GPU.rom"/>
-  <address type="pci" domain="0x0000" bus="0x05" slot="0x00" function="0x0"/>
+  <!--  Leave the Usual Stuff -->
 </hostdev>
 ```
 
+And edit the Overview XML, placing this line inside the hyperv tags
+```xml
+<hyperv mode="custom">
+  <!--  Leave the Usual Stuff -->
+  <vendor_id state="on" value="12345"/>
+</hyperv>
 
 And of course `amd_iommu=on iommu=pt iommu=1 video=efifb:off` appended on the end of `/etc/default/grub`
 
