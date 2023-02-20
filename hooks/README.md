@@ -19,7 +19,11 @@ Reboot.
 ## File Placement
 The hooks folder files would reside inside of `/etc/libvirt/`
 
-and the GPU BIOS (in my case an MSI RX 6600 XT) would reside in `/usr/share/vgabios`
+- Under `/hooks/qemu.d/` the name after this is the name of your vm. 
+- So for a vm named "win-10"
+- it would be `/etc/libvirt/hooks/qemu.d/win-10/`
+
+and the GPU BIOS (in my case an MSI RX 6600 XT) would reside in `/usr/share/vgabios/GPU.rom`
 
 ## VM Details
 
