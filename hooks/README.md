@@ -1,14 +1,17 @@
-## Tools Needed
+## Dependencies
 
-Run `sudo apt install qemu-kvm qemu-utils libvirt-daemon-system libvirt-clients bridge-utils virt-manager ovmf`
+
+```sh
+sudo apt install qemu-kvm qemu-utils libvirt-daemon-system libvirt-clients bridge-utils virt-manager ovmf
+```
 
 Reboot
 
-Run `sudo virsh net-start default`
-
-Run `sudo virsh net-autostart default`
-
-Run `usermod -aG kvm,input,libvirt $USER`
+```sh
+sudo virsh net-start default
+sudo virsh net-autostart default
+usermod -aG kvm,input,libvirt $USER
+```
 
 ## Preping GRUB
 
@@ -21,7 +24,7 @@ Reboot.
 To Verify IOMMU Groups the following script can be run:
 
 ```sh
-#!/bin/bash
+#!/usr/bin/env bash
 shopt -s nullglob
 for g in `find /sys/kernel/iommu_groups/* -maxdepth 0 -type d | sort -V`; do
     echo "IOMMU Group ${g##*/}:"
@@ -46,20 +49,20 @@ chmod +x /etc/libvirt/hooks/qemu.d/ [VM NAME IN QEMU] /release/end/revert.sh
 
 and the GPU BIOS (in my case an MSI RX 6600 XT) would reside in `/usr/share/vgabios/GPU.rom`
 
-While other sources tell me that AMD GPUs don't need this, I tended to have issues without it.
+While other sources tell me that AMD GPUs don't need this, I had a lot of issues without it.
 
 ## VM Details
 
-| Detail | Setting |
-|:------:|:--------|
-| Chipset | Q35 |
-| Emulator | `/usr/share/OVMF/OVMF_CODE_4M.ms.fd`
-| CPU Topology | Manual (almost identical but leave some cores for Linux) |
-| NIC | `NAT` and `e1000e` |
-| PCI Host Device | Your GPU |
-| PCI Host Device | GPUs Audio Device |
-| PCI Host Device | Your Keyboard |
-| PCI Host Device | Your Mouse |
+| Detail                | Setting |
+|:---------------------:|:----|
+| Chipset               | Q35 
+| Emulator              | `/usr/share/OVMF/OVMF_CODE_4M.ms.fd` 
+| CPU Topology          | Manual (almost identical but leave some cores for Linux) 
+| NIC                   | `NAT` and `e1000e` 
+| PCI Host Device       | Your GPU 
+| PCI Host Device       | GPUs Audio Device 
+| (USB) PCI Host Device | Your Keyboard 
+| (USB) PCI Host Device | Your Mouse 
 
 ## And edit the Overview XML, placing this line inside the hyperv tags
 ```xml
