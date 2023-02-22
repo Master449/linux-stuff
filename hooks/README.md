@@ -15,13 +15,15 @@ usermod -aG kvm,input,libvirt $USER
 
 ## Preping GRUB
 
+Inside of GRUB (`/etc/default/grub`)
+
 Add `amd_iommu=on iommu=pt iommu=1 video=efifb:off` on the end of `GRUB_CMDLINE_LINUX_DEFAULT` inside of `/etc/default/grub`
 
-Run `sudo grub-mkconfig -o /boot/grub/grub.cfg` to apply.
+Should look something like: `GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=on iommu=pt iommu=1 video=efifb:off"`
 
-Reboot.
+Run `sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo reboot now` to apply.
 
-To Verify IOMMU Groups the following script can be run:
+## To Verify IOMMU Groups the following script can be run:
 
 ```sh
 #!/usr/bin/env bash
@@ -98,4 +100,4 @@ And just like that I have super speed performance, and I don't have to reboot ev
 
 ## Credits
 
-Shoutout to [QaidVoids Single GPU Passthrough Script](https://github.com/QaidVoid/Complete-Single-GPU-Passthrough) and the [VFIO Subreddit](https://reddit.com/r/VFIO) and the random users across MANY boards who have run into these issues in the past. ❤️
+Shoutout to [QaidVoids Single GPU Passthrough Guide](https://github.com/QaidVoid/Complete-Single-GPU-Passthrough) and the [VFIO Subreddit](https://reddit.com/r/VFIO) and the random users across MANY boards who have run into these issues in the past. ❤️
