@@ -8,6 +8,8 @@ Run `sudo virsh net-start default`
 
 Run `sudo virsh net-autostart default`
 
+Run `usermod -aG kvm,input,libvirt $USER`
+
 ## Preping GRUB
 
 Add `amd_iommu=on iommu=pt iommu=1 video=efifb:off` on the end of `GRUB_CMDLINE_LINUX_DEFAULT` inside of `/etc/default/grub`
