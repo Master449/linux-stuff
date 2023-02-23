@@ -89,3 +89,25 @@ get-apt wine
 
 get-deb discord 'https://discord.com/api/download?platform=linux&format=deb'
 get-deb vivaldi 'https://downloads.vivaldi.com/stable/vivaldi-stable_5.6.2867.62-1_amd64.deb'
+
+# Enabling IOMMU for AMD
+BOOT_CONFIG_FILE="/etc/default/grub"
+
+if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
+    $(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
+else 
+    echo "AMD IOMMU All Good!"
+fi
+
+grub-update
+
+# Copy the hooks folder
+cp -R ./hooks/ /etc/libvirt/
+
+# Permissions related
+usermod -a -G libvirt $(whoami)
+systemctl start libvirt
+systemctl enable libvirt
+
+# Reboot to get everything in order
+reboot now
