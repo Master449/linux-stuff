@@ -74,7 +74,6 @@ echo ""
 sleep 1s
 apt update
 
-get-apt code "'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'"
 get-apt curl
 get-apt git
 get-apt gnome-tweaks
@@ -87,6 +86,7 @@ get-apt steam
 get-apt virt-manager
 get-apt wine
 
+get-deb code "'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'"
 get-deb discord 'https://discord.com/api/download?platform=linux&format=deb'
 get-deb vivaldi 'https://downloads.vivaldi.com/stable/vivaldi-stable_5.6.2867.62-1_amd64.deb'
 
