@@ -28,7 +28,7 @@ Packages=(
 	virt-manager
 )
 
-secs=1
+secs=10
 
 # Boot config file to add IOMMU too (if not there)
 BOOT_CONFIG_FILE="/etc/default/grub"
