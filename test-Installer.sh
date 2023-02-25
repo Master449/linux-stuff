@@ -7,6 +7,7 @@ set -u
 #   exit 1
 #fi
 
+# Packages to install
 Packages=(
 	bridge-utils
 	curl
@@ -29,6 +30,10 @@ Packages=(
 
 secs=10
 
+# Boot config file to add IOMMU too (if not there)
+
+
+# Just some colors
 RED="\e[31m"
 ENDCOLOR="\e[0m"
 
@@ -59,10 +64,10 @@ echo -e "--------------------------------------------------\n"
 
 echo "apt update"
 
+# Loop through packages and install them
 for i in "${Packages[@]}"; do get-apt "$i"; done
 
-BOOT_CONFIG_FILE="/etc/default/grub"
-
+# Add IOMMU to grub if not there
 if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
 	$(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
     echo "grub-update"
@@ -70,10 +75,17 @@ else
 	echo "AMD IOMMU All Good!"
 fi
 
-echo "cp -R ./hooks/ /etc/libvirt/"
+# Check if libvirt hooks folder exists
+if [ -d "/etc/libvirt/hooks" ]; then
+	echo "Libvirt hooks folder found. Leaving Alone."
+else
+	echo "cp -R ./hooks/ /etc/libvirt/"
+fi
 
+# Add user to libvirt group
 echo "usermod -a -G libvirt $(whoami)"
 
+# Check if libvirt service is running
 if [ $(systemctl is-active libvirtd) ]; then
 	echo "Libvirt Service found. Leaving Alone."
 else
