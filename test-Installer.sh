@@ -33,12 +33,10 @@ RED="\e[31m"
 ENDCOLOR="\e[0m"
 
 get-apt() {
-	echo -e "\n--------------------------------------------------"
-	echo "             Getting $1 "
+	echo -e "\n             Getting $1 "
 	echo -e "--------------------------------------------------\n"
-	sleep 1s
 	if [ $# -eq 1 ]; then
-		echo "apt-get install $1 -y"
+		echo "apt-get install $1 -y &> /dev/null"
 	else
 		echo "add-apt-repository $2"
 		echo "apt update"

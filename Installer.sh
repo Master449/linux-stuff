@@ -33,11 +33,10 @@ RED="\e[31m"
 ENDCOLOR="\e[0m"
 
 get-apt () {
-	echo -e "\n--------------------------------------------------"
-	echo "             Getting $1 "
+	echo -e "\n             Getting $1 "
 	echo -e "--------------------------------------------------\n"	
 	
-	apt-get install $1 -y
+	apt-get install $1 -y &> /dev/null
 }
 
 
