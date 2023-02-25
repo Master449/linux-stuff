@@ -3,7 +3,7 @@
 set -u
 
 #if [[ $EUID -ne 0 ]]; then
-#   echo "This script must be run as root" 
+#   echo "This script must be run as root"
 #   exit 1
 #fi
 
@@ -32,22 +32,19 @@ secs=10
 RED="\e[31m"
 ENDCOLOR="\e[0m"
 
-get-apt () {
+get-apt() {
 	echo -e "\n--------------------------------------------------"
 	echo "             Getting $1 "
 	echo -e "--------------------------------------------------\n"
 	sleep 1s
-	if [ $# -eq 1 ]
-		then
-			echo "apt-get install $1 -y"
-		else
-			echo "add-apt-repository $2"
-			echo "apt update"
-			echo "apt-get install $1 -y"
+	if [ $# -eq 1 ]; then
+		echo "apt-get install $1 -y"
+	else
+		echo "add-apt-repository $2"
+		echo "apt update"
+		echo "apt-get install $1 -y"
 	fi
 }
-
-
 
 echo -e "\n${RED}"
 echo -e "   THIS SCRIPT WILL REBOOT WHEN IT IS FINISHED    "
@@ -57,7 +54,6 @@ while [ $secs -gt 0 ]; do
 	sleep 1
 	: $((secs--))
 done
- 
 
 echo -e "\n${ENDCOLOR}--------------------------------------------------"
 echo -e "                  Updating APT                    "
@@ -70,9 +66,9 @@ for i in "${Packages[@]}"; do get-apt "$i"; done
 BOOT_CONFIG_FILE="/etc/default/grub"
 
 if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
-    $(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
-else 
-    echo "AMD IOMMU All Good!"
+	$(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
+else
+	echo "AMD IOMMU All Good!"
 fi
 
 echo "grub-update"
