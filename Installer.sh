@@ -27,7 +27,7 @@ Packages=(
 	virt-manager
 )
 
-secs=10
+secs=1
 
 RED="\e[31m"
 ENDCOLOR="\e[0m"
@@ -63,18 +63,24 @@ BOOT_CONFIG_FILE="/etc/default/grub"
 
 if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
     $(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
+    grub-update
 else 
     echo "AMD IOMMU All Good!"
 fi
 
-grub-update
-
-cp -R ./hooks/ /etc/libvirt/
+if [ -d "/etc/libvirt/hooks" ]; then
+	echo "Libvirt hooks folder found. Leaving Alone."
+else
+	cp -R ./hooks/ /etc/libvirt/
+fi
 
 usermod -a -G libvirt $(whoami)
 
-systemctl start libvirt
+if [ $(systemctl is-active libvirtd) ]; then
+	echo "Libvirt Service found. Leaving Alone."
+else
+	systemctl start libvirt
+    systemctl enable libvirt
+fi
 
-systemctl enable libvirt
-
-reboot now
+#reboot now

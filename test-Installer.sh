@@ -65,18 +65,20 @@ BOOT_CONFIG_FILE="/etc/default/grub"
 
 if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
 	$(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
+    echo "grub-update"
 else
 	echo "AMD IOMMU All Good!"
 fi
-
-echo "grub-update"
 
 echo "cp -R ./hooks/ /etc/libvirt/"
 
 echo "usermod -a -G libvirt $(whoami)"
 
-echo "systemctl start libvirt"
-
-echo "systemctl enable libvirt"
+if [ $(systemctl is-active libvirtd) ]; then
+	echo "Libvirt Service found. Leaving Alone."
+else
+	echo "systemctl start libvirt"
+    echo "systemctl enable libvirt"
+fi
 
 echo "reboot now"
