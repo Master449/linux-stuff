@@ -15,5 +15,6 @@ All of this is under the hooks directory. There is a readme within there.
 I can verify as of 02/22/2023 that I got it working with 
  - Windows 10
  - Windows 11
- - MacOS Monterey (with the help of [OSX-KVM](https://github.com/kholia/OSX-KVM) )
-   - Even xcode works! 
+ - MacOS Monterey
+ - MacOS Ventura
+   - Even xcode works on both!
