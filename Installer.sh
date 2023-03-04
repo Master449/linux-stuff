@@ -2,11 +2,15 @@
 
 set -u
 
-DryRun = false
+DryRun=true
 
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
+if [ $DryRun = true ]; then
+	echo "--------Dry Run-------"
+else
+	if [[ $EUID -ne 0 ]]; then
+   		echo "This script must be run as root" 
+   		exit 1
+	fi
 fi
 
 # Packages to install
@@ -30,7 +34,13 @@ Packages=(
 	virt-manager
 )
 
-countdownSeconds=10
+# Countdown Timer
+# If it's a dry run, it will only be 1 second
+if [ $DryRun = true ]; then
+	countdownSeconds=1
+else
+	countdownSeconds=10
+fi
 
 # Boot config file to add IOMMU too (if not there)
 BOOT_CONFIG_FILE="/etc/default/grub"
