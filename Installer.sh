@@ -4,6 +4,8 @@ set -u
 
 DryRun=true
 
+# Check if script is run as root if not, exit
+# if DryRun is true, it will not exit
 if [ $DryRun = true ]; then
 	echo "--------Dry Run-------"
 else
@@ -16,22 +18,25 @@ fi
 # Packages to install
 Packages=(
 	bridge-utils
+	cifs-utils
 	curl
 	git
+	gnome-shell-extensions
+	gnome-shell-extension-manager
 	gnome-tweaks
-	qemu-kvm
-	qemu-utils
+	htop
 	libvirt-daemon-system
 	libvirt-clients
+	neovim
 	openjdk-17-jdk
 	openjdk-17-jre
 	ovmf
 	python3
 	qemu-kvm
+	qemu-utils
 	steam
 	virt-manager
 	wine
-	virt-manager
 )
 
 # Countdown Timer
@@ -81,8 +86,10 @@ echo -e "--------------------------------------------------\n"
 
 if [ $DryRun = true ]; then
 	echo "apt update"
+	echo "apt upgrade -y"
 else
 	apt update
+	apt upgrade -y
 fi
 
 # Loop to call get-apt function
