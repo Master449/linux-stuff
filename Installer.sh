@@ -2,7 +2,7 @@
 
 set -u
 
-DryRun=true
+DryRun=false
 
 # Check if script is run as root if not, exit
 # if DryRun is true, it will not exit
@@ -36,6 +36,7 @@ Packages=(
 	qemu-utils
 	steam
 	virt-manager
+	vlc
 	wine
 )
 
