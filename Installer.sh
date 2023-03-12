@@ -20,7 +20,12 @@ Packages=(
 	bridge-utils
 	cifs-utils
 	curl
+	dmg2img
+	ffmpeg
+	gimp
 	git
+	gparted
+	grub-customizer
 	gnome-shell-extensions
 	gnome-shell-extension-manager
 	gnome-tweaks
@@ -93,6 +98,16 @@ else
 	apt upgrade -y
 fi
 
+echo "Some .deb packages I was too lazy to write a function for"
+
+if [ $DryRun = true ]; then
+	echo "wget -O discord.deb 'https://discordapp.com/api/download?platform=linux&format=deb' "
+	echo "dpkg -i discord.deb"
+else
+	wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+	dpkg -i discord.deb
+fi
+
 # Loop to call get-apt function
 for i in "${Packages[@]}"; do get-apt "$i"; done
 
@@ -101,8 +116,8 @@ if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
 	if [ $DryRun = true ]; then
 		echo "Edit $BOOT_CONFIG_FILE and add amd_iommu=on iommu=pt to GRUB_CMDLINE_LINUX_DEFAULT"
 	else
-    	$(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
-    	grub-update
+    		$(sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&amd_iommu=on iommu=pt /' "$BOOT_CONFIG_FILE")
+    		grub-update
 	fi
 else 
     echo "AMD IOMMU All Good!"
@@ -135,7 +150,7 @@ else
 		echo "systemctl enable libvirt"
 	else
 		systemctl start libvirt
-    	systemctl enable libvirt
+    		systemctl enable libvirt
 	fi
 fi
 
