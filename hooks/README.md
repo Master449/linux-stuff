@@ -86,17 +86,9 @@ While other sources tell me that AMD GPUs don't need this, I had a lot of issues
 </hostdev>
 ```
 
-## Other Ideas
+Where do I get a GPU vBIOS?
 
-My machine was originally a dual boot. (Windows 11 on NVMe Slot 1, Ubuntu on NVMe Slot 2)
-
-Make sure GRUB is located on the Ubuntu one (where the host is located)
-
-Then you can pass in the NVMe of Windows 11 (make sure theres no conflicting IOMMU Groups.
-
-And just like that I have super speed performance, and I don't have to reboot everytime to get back to my usual Windows installation.
-
-(This may need a few reboots of the VM to work, and make sure AI Suite is uninstalled)
+You can either rip your own using GPU-Z on Windows or find your **exact model** [here](https://www.techpowerup.com/vgabios/)
 
 ## Credits
 
