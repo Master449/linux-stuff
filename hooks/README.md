@@ -17,9 +17,9 @@ usermod -aG kvm,input,libvirt $USER
 
 Inside of GRUB (`/etc/default/grub`)
 
-Add `amd_iommu=on iommu=pt iommu=1 video=efifb:off` on the end of `GRUB_CMDLINE_LINUX_DEFAULT` inside of `/etc/default/grub`
+Add `amd_iommu=on iommu=pt iommu=1` on the end of `GRUB_CMDLINE_LINUX_DEFAULT` inside of `/etc/default/grub`
 
-Should look something like: `GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=on iommu=pt iommu=1 video=efifb:off"`
+Should look something like: `GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=on iommu=pt iommu=1"`
 
 Run `sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo reboot now` to apply.
 
