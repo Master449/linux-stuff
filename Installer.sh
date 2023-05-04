@@ -16,7 +16,7 @@ else
 fi
 
 # Packages to install
-Packages=(
+aptPackages=(
 	bridge-utils
 	cifs-utils
 	curl
@@ -44,6 +44,8 @@ Packages=(
 	vlc
 	wine
 )
+
+
 
 # Countdown Timer
 # If it's a dry run, it will only be 1 second
@@ -98,18 +100,9 @@ else
 	apt upgrade -y
 fi
 
-echo "Some .deb packages I was too lazy to write a function for"
-
-if [ $DryRun = true ]; then
-	echo "wget -O discord.deb 'https://discordapp.com/api/download?platform=linux&format=deb' "
-	echo "dpkg -i discord.deb"
-else
-	wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-	dpkg -i discord.deb
-fi
 
 # Loop to call get-apt function
-for i in "${Packages[@]}"; do get-apt "$i"; done
+for i in "${aptPackages[@]}"; do get-apt "$i"; done
 
 # Check if IOMMU is enabled
 if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
