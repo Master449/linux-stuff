@@ -89,9 +89,9 @@ get-apt () {
 	echo -e "\n             Getting $1 "
 	echo -e "--------------------------------------------------\n"
 	if [ $DryRun = true ]; then
-		echo "apt-get install $1 -y &> /dev/null"
+		echo "apt-get install $1 -y"
 	else
-		apt-get install $1 -y &> /dev/null
+		apt-get install $1 -y
 	fi
 }
 
@@ -121,8 +121,7 @@ echo -e "                  Updating $osInfo                    "
 echo -e "--------------------------------------------------\n"
 
 if [ $osInfo == 'pacman' ]; then
-	if [ $DryRun = true]; then
-		echo "pacman -Syu"
+	if [ $DryRun = true ]; then
 		echo "pacman -Syu"
 	else
 		pacman -Syu
@@ -139,7 +138,7 @@ fi
 
 # Loop to install packages
 if [ $osInfo = 'pacman' ]; then
-	for i in "${aptPackages[@]}"; do get-pacman "$i"; done
+	for i in "${pacmanPackages[@]}"; do get-pacman "$i"; done
 else
 	for i in "${aptPackages[@]}"; do get-apt "$i"; done
 fi
