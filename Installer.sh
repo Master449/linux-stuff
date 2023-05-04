@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -u
+DryRun=true
 
-DryRun=false
+if command -v apt-get >/dev/null; then
+	osInfo="apt-get"
+elif command -v pacman >/dev/null; then
+	osInfo="pacman"
+fi
 
 # Check if script is run as root if not, exit
 # if DryRun is true, it will not exit
@@ -83,8 +87,7 @@ ENDCOLOR="\e[0m"
 #   Sends output to /dev/null
 get-apt () {
 	echo -e "\n             Getting $1 "
-	echo -e "--------------------------------------------------\n"	
-	
+	echo -e "--------------------------------------------------\n"
 	if [ $DryRun = true ]; then
 		echo "apt-get install $1 -y &> /dev/null"
 	else
@@ -92,8 +95,16 @@ get-apt () {
 	fi
 }
 
-
-
+# Function to install pacman packages
+get-pacman() {
+	echo -e "\n             Getting $1 "
+	echo -e "--------------------------------------------------\n"
+	if [ $DryRun = true ]; then
+		echo "pacman -Syu --noconfirm $1"
+	else
+		pacman -Syu --noconfirm $1
+	fi
+}
 echo -e "\n${RED}"
 echo -e "   THIS SCRIPT WILL REBOOT WHEN IT IS FINISHED    "
 
@@ -106,20 +117,33 @@ done
  
 # Update APT before installing
 echo -e "\n${ENDCOLOR}--------------------------------------------------"
-echo -e "                  Updating APT                    "
+echo -e "                  Updating $osInfo                    "
 echo -e "--------------------------------------------------\n"
 
-if [ $DryRun = true ]; then
-	echo "apt update"
-	echo "apt upgrade -y"
+if [ $osInfo == 'pacman' ]; then
+	if [ $DryRun = true]; then
+		echo "pacman -Syu"
+		echo "pacman -Syu"
+	else
+		pacman -Syu
+	fi
 else
-	apt update
-	apt upgrade -y
+	if [ $DryRun = true ]; then
+		echo "apt update"
+		echo "apt upgrade -y"
+	else
+		apt update
+		apt upgrade -y
+	fi
 fi
 
+# Loop to install packages
+if [ $osInfo = 'pacman' ]; then
+	for i in "${aptPackages[@]}"; do get-pacman "$i"; done
+else
+	for i in "${aptPackages[@]}"; do get-apt "$i"; done
+fi
 
-# Loop to call get-apt function
-for i in "${aptPackages[@]}"; do get-apt "$i"; done
 
 # Check if IOMMU is enabled
 if ! grep -i -q "amd_iommu" "$BOOT_CONFIG_FILE"; then
