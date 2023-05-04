@@ -45,7 +45,24 @@ aptPackages=(
 	wine
 )
 
-
+pacmanPackages=(
+# Daily Driver Stuff
+  steam
+  vivaldi
+  discord
+  neovim
+# Utilities
+  code
+  gimp
+# Virtual Machine Related
+  libvirt
+  qemu
+  bridge-utils
+  vde2
+  virt-manager
+# Prereqs for other programs
+  jre-openjdk
+)
 
 # Countdown Timer
 # If it's a dry run, it will only be 1 second
