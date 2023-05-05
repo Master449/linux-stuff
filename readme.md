@@ -4,9 +4,7 @@ This is just a repo to store some scripts and some handy guides that I had found
 
 ## Packages
 
-`installer.sh` Will run and install all the packages I ususally grab
-
-`test-installer.sh` Is the exact same, but its just a dry run with echo instead of running the commands
+Originally I had bash scripts in here, but after talking with a friend of mine, switched over to ansible playbooks.
 
 ## Single GPU Passthrough for QEMU/KVM
 
