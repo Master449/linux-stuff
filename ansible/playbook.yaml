@@ -3,18 +3,21 @@
   become: yes
   tasks:
 
+# Runs on distros with Pacman
     - name: Install pacman packages
         pacman:
           name: ['steam', 'vivaldi', 'discord', 'neovim', 'code', 'gimp', 'libvirt', 'qemu', 'bridge-utils', 'vde2', 'virt-manager', 'jre-openjdk']
           state: latest
         when: ansible_distribution in ["Arch", "Manjaro"]
 
+# Runs on distros with apt
     - name: Install apt packages
         pacman:
-          name:  ['bridge-utils', 'cifs-utils', 'curl', 'dmg2img', 'ffmpeg', 'gimp', 'git', 'gparted', 'grub-customizer', 'gnome-shell-extensions', 'gnome-shell-extension-manager', 'gnome-tweaks', 'htop', 'libvirt-daemon-system', 'libvirt-clients', 'neovim', 'openjdk-17-jdk', 'openjdk-17-jre', 'ovmf', 'python3', 'qemu-kvm', 'qemu-utils', 'steam', 'virt-manager', 'vlc', 'wine']
+          name:  ['bridge-utils', 'cifs-utils', 'curl', 'gimp', 'git', 'gparted', 'grub-customizer', 'gnome-shell-extensions', 'gnome-shell-extension-manager', 'gnome-tweaks', 'htop', 'libvirt-daemon-system', 'libvirt-clients', 'neovim', 'openjdk-17-jdk', 'openjdk-17-jre', 'ovmf', 'python3', 'qemu-kvm', 'qemu-utils', 'steam', 'virt-manager', 'vlc', 'wine']
           state: latest
         when: ansible_distribution in ["Ubuntu", "Kubuntu", "Debian"]
 
+# Runs regardless
     - name: Enable IOMMU
         lineinfile:
           path: /etc/default/grub
