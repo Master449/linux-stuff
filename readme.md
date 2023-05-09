@@ -1,5 +1,3 @@
-# new-ubuntu
-
 This is just a repo to store some scripts and some handy guides that I had found/wrote for my specific system
 
 ## Packages
