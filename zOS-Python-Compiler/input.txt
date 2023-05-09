@@ -1,0 +1,10 @@
+* START QUESTION 1
+NONE Load Register10 Register2
+NONE Load Register10 128
+NONE Multiply Register4 Register3
+NONE Store Register5 RESULT
+NONE Dump  
+NONE EndProgram 14
+NONE Literal
+* STORAGE DECLARATIONS
+RESULT DefineStorage F
