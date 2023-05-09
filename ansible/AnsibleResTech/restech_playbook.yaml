@@ -1,0 +1,31 @@
+---
+# To run this file, ensure inventory exists and ansible.cfg
+#   Then just 
+#   ansible-playbook --ask-become-pass restech_playbook.yaml
+#
+# This will target all hosts
+- hosts: all
+  become: true
+  pre-tasks:
+
+  - name: Update to Stable
+    command: nixos-rebuild switch --upgrade
+
+# This will target only machines under the tag [new_machines] in the inventory file
+- hosts: [new_machines]
+  become: true
+  pre-tasks:
+  
+  - name: Copy NixOS Configuration
+    copy:
+      src: configuration.nix
+      desk: /etc/nixos/configuration.nix
+      owner: root
+      group: root
+      mode: '700'
+
+  tasks:
+  - name: Rebuilding NixOS
+      command: nixos-rebuild switch
+# Pre-tasks ensure they run prior to the normal tasks
+# There is also a post-tasks but I have not looked into it
