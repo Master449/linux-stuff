@@ -6,7 +6,7 @@
 # Runs on distros with Pacman
     - name: Install pacman packages
         pacman:
-          name: ['steam', 'vivaldi', 'discord', 'neovim', 'code', 'gimp', 'libvirt', 'qemu', 'bridge-utils', 'vde2', 'virt-manager', 'jre-openjdk']
+          name: ['steam', 'vivaldi', 'discord', 'neovim', 'code', 'gimp', 'libvirt', 'qemu', 'bridge-utils', 'vde2', 'virt-manager', 'jre-openjdk', 'git']
           state: latest
         when: ansible_distribution in ["Arch", "Manjaro"]
 
@@ -28,3 +28,12 @@
 
     - name: Update GRUB
         command: grub-mkconfig -o /boot/grub/grub.cfg
+
+    - name: Update git config name
+        command: git config --global user.name "David Flowers II"
+
+    - name: Update git config email
+        command: git config --global user.email "master4491@gmail.com"
+
+    - name: Update git config adog alias
+        command: git config --global alias.adog "git log --all --decorate --oneline --graph"
