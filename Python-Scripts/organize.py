@@ -140,7 +140,7 @@ if __name__ == '__main__':
     try:
         create_folders(directories, directory_path)
         organize_folders(directories, directory_path)
-        organize_remaining_files(directory_path)
+        #organize_remaining_files(directory_path)
         #organize_remaining_folders(directories, directory_path)
     except shutil.Error:
         print("There was an error trying to move an item to its destination folder")
