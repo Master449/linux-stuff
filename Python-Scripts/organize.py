@@ -125,37 +125,24 @@ def organize_remaining_folders(directories, directory_path):
 if __name__ == '__main__':
     directory_path = "/home/david/Downloads"
     directories = {
-        "HTML": (".html5", ".html", ".htm", ".xhtml"),
-        "IMAGES": (".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg",
-                   "svg",
-                   ".heif", ".psd"),
-        "VIDEOS": (".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob",
-                   ".mng",
-                   ".qt", ".mpg", ".mpeg", ".3gp", ".mkv"),
-        "DOCUMENTS": (".oxps", ".epub", ".pages", ".docx", ".doc", ".fdf",
-                      ".ods",
-                      ".odt", ".pwi", ".xsn", ".xps", ".dotx", ".docm", ".dox",
-                      ".rvg", ".rtf", ".rtfd", ".wpd", ".xls", ".xlsx", ".ppt",
-                      "pptx"),
-        "ARCHIVES": (".a", ".ar", ".cpio", ".iso", ".tar", ".gz", ".rz", ".7z",
-                     ".dmg", ".rar", ".xar", ".zip", ".bz2", "tar.gz"),
-        "AUDIO": (".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p",
-                  ".mp3",
-                  ".msv", "ogg", "oga", ".raw", ".vox", ".wav", ".wma"),
-        "PLAINTEXT": (".txt", ".in", ".out"),
+        "WebDev": (".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue"),
+        "Images": (".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg", "svg", ".heif", ".psd"),
+        "Videos": (".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng", ".qt", ".mpg", ".mpeg", ".3gp", ".mkv"),
+        "Documents": (".oxps", ".epub", ".pages", ".docx", ".doc", ".fdf", ".ods", ".odt", ".pwi", ".xsn", ".xps", ".dotx", ".docm", ".dox", ".rvg", ".rtf", ".rtfd", ".wpd", ".xls", ".xlsx", ".ppt", "pptx"),
+        "Compressed": (".a", ".ar", ".cpio", ".iso", ".tar", ".gz", ".rz", ".7z", ".dmg", ".rar", ".xar", ".zip", ".bz2", "tar.gz"),
+        "Audio": (".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p", ".mp3", ".msv", "ogg", "oga", ".raw", ".vox", ".wav", ".wma"),
+        "Plaintext": (".txt", ".in", ".out"),
         "PDF": ".pdf",
-        "JARS": ".jar",
-        "JAVASCRIPT": ".js",
-        "PYTHON": ".py",
-        "EXE": (".exe", ".pkg", ".deb", ".AppImage"),
-        "OTHER": "",
-        "FOLDERS": ""
+        "Java": ".jar",
+        "Python": ".py",
+        "Executable": (".exe", ".pkg", ".deb", ".AppImage"),
+        "Others": ""
     }
     try:
         create_folders(directories, directory_path)
         organize_folders(directories, directory_path)
         organize_remaining_files(directory_path)
-        organize_remaining_folders(directories, directory_path)
+        #organize_remaining_folders(directories, directory_path)
     except shutil.Error:
         print("There was an error trying to move an item to its destination folder")
 
