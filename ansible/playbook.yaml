@@ -1,9 +1,9 @@
 ---
-- hosts: "arch_boxes"
+- hosts: all
   become: yes
   tasks:
 
-    - name: Install Global packages
+    - name: Installing packages without differing names
       package:
         name: ['bridge-utils', 'curl', 'gimp', 'git', 'htop', 'wget']
         state: latest
