@@ -1,21 +1,57 @@
 ---
-- hosts: all
+- hosts: "arch_boxes"
   become: yes
   tasks:
+
+    - name: Install Global packages
+      package:
+        name: ['bridge-utils', 'curl', 'gimp', 'git', 'htop', 'wget']
+        state: latest
 
 # Runs on distros with Pacman
     - name: Install pacman packages
       pacman:
-          name: ['bridge-utils', 'steam', 'discord', 'neovim', 'code', 'gimp', 'git', 'libvirt', 'qemu', 'vde2', 'virt-manager', 'jre-openjdk', 'vivaldi']
+          name:
+            - steam
+            - discord
+            - neovim
+            - code
+            - gimp
+            - libvirt
+            - qemu
+            - vde2
+            - virt-manager
+            - jre-openjdk
+            - vivaldi
           state: latest
-      when: ansible_distribution in ["Arch", "Manjaro"]
+      when: ansible_distribution in ["Archlinux", "Manjaro"]
 
 # Runs on distros with apt
     - name: Install apt packages
-      pacman:
-          name:  ['bridge-utils', 'cifs-utils', 'curl', 'gimp', 'git', 'gparted', 'grub-customizer', 'gnome-shell-extensions', 'gnome-shell-extension-manager', 'gnome-tweaks', 'htop', 'libvirt-daemon-system', 'libvirt-clients', 'neovim', 'openjdk-17-jdk', 'openjdk-17-jre', 'ovmf', 'python3', 'qemu-kvm', 'qemu-utils', 'steam', 'virt-manager', 'vlc', 'wine']
-          state: latest
-        when: ansible_distribution in ["Ubuntu", "Kubuntu", "Debian"]
+      apt:
+        pkg:
+          - cifs-utils
+          - gparted
+          - grub-customizer
+          - gnome-shell-extensions
+          - gnome-shell-extension-manager
+          - gnome-tweaks
+          - libvirt-daemon-system
+          - libvirt-clients
+          - neovim
+          - openjdk-17-jdk
+          - openjdk-17-jre
+          - ovmf
+          - python3
+          - qemu-kvm
+          - qemu-utils
+          - steam
+          - virt-manager
+          - vlc
+          - wine
+        state: latest
+        update_cache: yes
+      when: ansible_distribution in ["Ubuntu", "Kubuntu", "Debian"]
 
 # Runs regardless
     - name: Enable IOMMU
@@ -23,26 +59,21 @@
           path: /etc/default/grub
           regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((:?(?!amd_iommu=on).)*?)"$'
           line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 amd_iommu=on iommu=pt iommu=1"'
-      backup: true
-      backrefs: true
+          backup: true
+          backrefs: true
 
     - name: Update GRUB
       command: grub-mkconfig -o /boot/grub/grub.cfg
 
-# These commands make it so asnsible becomes my user to run these
-    - name: Update git config name
-      command: git config --global user.name "David Flowers II"
+# These commands make it so ansible becomes my user to run these
+    - name: Update git config
+      shell: |
+        git config --global user.name "David Flowers II"
+        git config --global user.email "master4491@gmail.com"
+        git config --global alias.adog "log --all --decorate --oneline --graph"
       become_user: david
 
-    - name: Update git config email
-      command: git config --global user.email "master4491@gmail.com"
-      become_user: david
-
-    - name: Update git config adog alias
-      command: git config --global alias.adog "git log --all --decorate --oneline --graph"
-      become_user: david
-
-    - name: Add serve alias for foo user
+    - name: Add aliases to bash_aliases
       lineinfile:
         path: /home/david/.bash_aliases
         owner: david
@@ -54,3 +85,9 @@
       - "alias gc='git commit'"
       - "alias gl='git log'"
       - "alias gp='git push'"
+      - "alias gd='git adog'"
+      - "alias ll='ls -Al --group-directories-first'"
+
+    - name: Update bash with the new aliases
+      shell: source ~/.bash_aliases
+      become_user: david
