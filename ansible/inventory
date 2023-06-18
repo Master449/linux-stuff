@@ -1,1 +1,10 @@
+[local]
 localhost ansible_connection=local
+
+[laptop]
+192.168.5.183
+
+[arch_boxes]
+192.168.122.70
+192.168.122.23
+192.168.122.36

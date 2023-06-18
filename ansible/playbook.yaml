@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  become: yes
+  become: true
   tasks:
 
     - name: Installing packages without differing names
@@ -23,6 +23,7 @@
             - virt-manager
             - jre-openjdk
             - vivaldi
+            - nvtop
           state: latest
       when: ansible_distribution in ["Archlinux", "Manjaro"]
 
@@ -61,9 +62,11 @@
           line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 amd_iommu=on iommu=pt iommu=1"'
           backup: true
           backrefs: true
+      when: ansible_form_factor == "Desktop"
 
     - name: Update GRUB
       command: grub-mkconfig -o /boot/grub/grub.cfg
+      when: ansible_form_factor == "Desktop"
 
 # These commands make it so ansible becomes my user to run these
     - name: Update git config
