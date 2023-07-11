@@ -97,9 +97,11 @@
 
     - name: Starting Virsh Internet connection
       shell: virsh net-start default && virsh net-autostart default
+      when: ansible_form_factor == "Desktop"
 
     - name: Adding qemu/kvm groups
       shell: usermod -aG kvm,input,libvirt david
+      when: ansible_form_factor == "Desktop"
 
     - name: Copying Libvirt hooks script into place
       copy:
@@ -108,11 +110,14 @@
         owner: david
         group: kvm
         mode: u=rwx,g=rwx,o=r
+      when: ansible_form_factor == "Desktop"
 
     - name: Creating vgabios directory
       shell: mkdir /usr/share/vgabios
+      when: ansible_form_factor == "Desktop"
 
     - name: Copying GPU vBIOS ROM into place
       copy:
         src: "/etc/libvirt/hooks/GPU.rom"
         dest: "/usr/share/vgabios"
+      when: ansible_form_factor == "Desktop"
