@@ -95,26 +95,24 @@
       shell: source ~/.bash_aliases
       become_user: david
 
+    - name: Starting Virsh Internet connection
+      shell: virsh net-start default && virsh net-autostart default
+
     - name: Adding qemu/kvm groups
       shell: usermod -aG kvm,input,libvirt david
 
-    - name: Creating Libvirt Hooks directories
-      shell: mkdir -p /etc/libvirt/hooks/qemu.d/win10/prepare/begin && mkdir -p /etc/libvirt/hooks/qemu.d/win10/release/end
+    - name: Copying Libvirt hooks script into place
+      copy:
+        src: "{{ inventory_dir | dirname }}/hooks"
+        dest: /etc/libvirt/hooks
+        owner: david
+        group: kvm
+        mode: u=rwx,g=rwx,o=r
 
-    - name: Creating vBIOS directories
+    - name: Creating vgabios directory
       shell: mkdir /usr/share/vgabios
 
-    - name: Copying Libvirt hooks script into place
-      shell: cp $(pwd)/qemu /etc/libvirt/hooks/qemu.d/qemu
-
-    - name: Copying Start scripts into place
-      shell: cp $(pwd)/hooks/qemu.d/win10/prepare/begin/start.sh /etc/libvirt/hooks/qemu.d/win10/prepare/begin/start.sh
-
-    - name: Copying Stop scripts into place
-      shell: cp $(pwd)/hooks/qemu.d/win10/release/end/revert.sh /etc/libvirt/hooks/qemu.d/win10/release/end/revert.sh
-
     - name: Copying GPU vBIOS ROM into place
-      shell: cp $(pwd)/GPU.rom /usr/share/vgabios/GPU.rom
-
-    - name: Updating previous files permissions
-      shell: chmod +x /etc/libvirt/hooks/qemu.d/win10/prepare/begin/start.sh && chmod +x /etc/libvirt/hooks/qemu.d/win10/release/end/revert.sh
+      copy:
+        src: "/etc/libvirt/hooks/GPU.rom"
+        dest: "/usr/share/vgabios"

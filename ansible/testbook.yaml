@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Copying Libvirt hooks script into place
+      copy:
+        src: "{{ inventory_dir | dirname }}/hooks"
+        dest: /etc/libvirt
+        owner: david
+        group: kvm
+        mode: u=rwx,g=rwx,o=r
