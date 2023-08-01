@@ -127,3 +127,26 @@
       user:
         name: david
         shell: /bin/zsh
+    
+    - name: Create fonts directory if it doesn't exist
+      file:
+        path: /home/david/.fonts
+        state: directory
+
+    - name: Download JetBrains Mono Nerd Font
+      get_url:
+        url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip"
+        dest: "/tmp/JetBrainsMono.zip"
+        mode: 0644
+
+    - name: Unzip JetBrains Mono Nerd Font
+      unarchive:
+        src: /tmp/JetBrainsMono.zip
+        dest: /home/david/.fonts
+        remote_src: true
+        extra_opts: --junk-paths
+        creates: /home/david/.fonts/JetBrainsMono-Regular.ttf
+
+    - name: Refresh font cache
+      shell: fc-cache -f -v
+      become_user: david
