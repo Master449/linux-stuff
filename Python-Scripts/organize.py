@@ -1,48 +1,7 @@
-"""
-Titel: Downloads organizer
-Author: Jan B.
-Date: april 2020
-Version: 1.0
-Python-version: 3.7
-
-This program is designed to organize the contents of a folder by assigning
-files with specific extensions to specific folders.
-This program is made with the purpose of organzing the windows download-folder,
-but by changing the directory_path-variable in the main it can tho(probably) be
-used for any folder.
-The directories-dictionary in the main specifies the names of the folders as
-well as the file extensions that should be assigned to those folders.
-You can change this dictionary to suit your needs.
-
-
-MIT License
-
-Copyright (c) [2020] [Jan B.]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
-# imports:
 import os
 import shutil
 import sys
-
+from pathlib import Path
 
 def create_folders(directories, directory_path):
     """
@@ -57,8 +16,6 @@ def create_folders(directories, directory_path):
     for key in directories:
         if key not in os.listdir(directory_path):
             os.mkdir(os.path.join(directory_path, key))
-    if "OTHER" not in os.listdir(directory_path):
-        os.mkdir(os.path.join(directory_path, "OTHER"))
 
 
 def organize_folders(directories, directory_path):
@@ -123,25 +80,40 @@ def organize_remaining_folders(directories, directory_path):
 
 
 if __name__ == '__main__':
-    directory_path = "/home/david/Downloads"
+
+    directory_path = str(Path.home() / "Downloads")
+    
+    
+
     directories = {
-        "WebDev": (".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue"),
-        "Images": (".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg", "svg", ".heif", ".psd"),
+        "Development": (".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue", ".jar", ".class", ".cpp", ".cc", ".c", ".py", ".log", ".json"),
+        "Images": (".jpeg", ".JPEG", ".jpg", ".JPG", ".tiff", ".gif", ".bmp", ".png", ".PNG", ".bpg", "svg", ".heif", ".psd", ".webp"),
         "Videos": (".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng", ".qt", ".mpg", ".mpeg", ".3gp", ".mkv"),
-        "Documents": (".pdf", ".oxps", ".epub", ".pages", ".docx", ".doc", ".fdf", ".ods", ".odt", ".pwi", ".xsn", ".xps", ".dotx", ".docm", ".dox", ".rvg", ".rtf", ".rtfd", ".wpd", ".xls", ".xlsx", ".ppt", "pptx"),
-        "Compressed": (".a", ".ar", ".cpio", ".iso", ".tar", ".gz", ".rz", ".7z", ".dmg", ".rar", ".xar", ".zip", ".bz2", "tar.gz", ".tar.xz", ".tar.zst", ".img", ".img.bs2"),
+        "Documents": (".pdf", ".PDF", ".oxps", ".epub", ".pages", ".docx", ".doc", ".fdf", ".ods", ".odt", ".pwi", ".xsn", ".xps", ".dotx", ".docm", ".dox", ".rvg", ".rtf", ".rtfd", ".wpd", ".xls", ".xlsx", ".ppt", "pptx", ".csv"),
+        "Compressed": (".a", ".ar", ".cpio", ".tar", ".gz", ".rz", ".7z", ".dmg", ".rar", ".xar", ".zip", ".bz2", "tar.gz", ".tar.xz", ".tar.zst", ".img.bs2"),
+        "BootMedia": (".iso", ".img"),
         "Audio": (".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p", ".mp3", ".msv", "ogg", "oga", ".raw", ".vox", ".wav", ".wma"),
         "Plaintext": (".txt", ".in", ".out"),
-        "Java": ".jar",
-        "Python": ".py",
         "Executable": (".exe", ".pkg", ".deb", ".AppImage"),
-        "Others": ""
+        "3D Models": (".obj", ".stl"),
+        "Torrents": ".torrent"
     }
+
+    development_directories = {
+        "Python": ".py",
+        "Java": (".jar", ".class"),
+        "WebDev": (".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue"),
+        "C": (".cpp", ".cc", ".h", ".c")
+    }
+
     try:
         create_folders(directories, directory_path)
+        create_folders(development_directories, str(os.path.join(directory_path, "Development")))
+
+        
         organize_folders(directories, directory_path)
-        #organize_remaining_files(directory_path)
-        #organize_remaining_folders(directories, directory_path)
+        organize_folders(development_directories, str(os.path.join(directory_path, "Development")))
+
     except shutil.Error:
         print("There was an error trying to move an item to its destination folder")
 
