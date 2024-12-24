@@ -32,7 +32,7 @@ def organize_folders(directories, directory_path):
             src_path = os.path.join(directory_path, file)
             for key in directories:
                 extension = directories[key]
-                if file.endswith(extension):
+                if file.endswith(tuple(extension)):
                     dest_path = os.path.join(directory_path, key, file)
                     shutil.move(src_path, dest_path)
                     break
@@ -82,37 +82,40 @@ def organize_remaining_folders(directories, directory_path):
 if __name__ == '__main__':
 
     directory_path = str(Path.home() / "Downloads")
-    
-    
 
     directories = {
-        "Development": (".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue", ".jar", ".class", ".cpp", ".cc", ".c", ".py", ".log", ".json"),
-        "Images": (".jpeg", ".JPEG", ".jpg", ".JPG", ".tiff", ".gif", ".bmp", ".png", ".PNG", ".bpg", "svg", ".heif", ".psd", ".webp"),
-        "Videos": (".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng", ".qt", ".mpg", ".mpeg", ".3gp", ".mkv"),
-        "Documents": (".pdf", ".PDF", ".oxps", ".epub", ".pages", ".docx", ".doc", ".fdf", ".ods", ".odt", ".pwi", ".xsn", ".xps", ".dotx", ".docm", ".dox", ".rvg", ".rtf", ".rtfd", ".wpd", ".xls", ".xlsx", ".ppt", "pptx", ".csv"),
-        "Compressed": (".a", ".ar", ".cpio", ".tar", ".gz", ".rz", ".7z", ".dmg", ".rar", ".xar", ".zip", ".bz2", "tar.gz", ".tar.xz", ".tar.zst", ".img.bs2"),
-        "BootMedia": (".iso", ".img"),
-        "Audio": (".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p", ".mp3", ".msv", "ogg", "oga", ".raw", ".vox", ".wav", ".wma"),
-        "Plaintext": (".txt", ".in", ".out"),
-        "Executable": (".exe", ".pkg", ".deb", ".AppImage"),
-        "3D Models": (".obj", ".stl"),
-        "Torrents": ".torrent"
+        "development": [".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue", ".jar", ".class", ".cpp", ".cc", ".c", ".py", ".log", ".json", ".xml", ".ttf", ".woff", ".woff2"],
+        "images": [".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg", "svg", ".heif", ".psd", ".webp"],
+        "videos": [".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng", ".qt", ".mpg", ".mpeg", ".3gp", ".mkv"],
+        "documents": [".pdf", ".PDF", ".oxps", ".epub", ".pages", ".docx", ".doc", ".fdf", ".ods", ".odt", ".pwi", ".xsn", ".xps", ".dotx", ".docm", ".dox", ".rvg", ".rtf", ".rtfd", ".wpd", ".xls", ".xlsx", ".ppt", "pptx", ".csv"],
+        "compressed": [".a", ".ar", ".cpio", ".tar", ".gz", ".rz", ".7z", ".dmg", ".rar", ".xar", ".zip", ".bz2", "tar.gz", ".tar.xz", ".tar.zst", ".img.bs2"],
+        "boot-media": [".iso", ".img"],
+        "audio": [".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p", ".mp3", ".msv", "ogg", "oga", ".raw", ".vox", ".wav", ".wma"],
+        "plaintext": [".txt", ".in", ".out"],
+        "executable": [".exe", ".pkg", ".deb", ".AppImage"],
+        "3d-models": [".obj", ".stl"],
+        "torrents": [".torrent"]
     }
 
-    development_directories = {
-        "Python": ".py",
-        "Java": (".jar", ".class"),
-        "WebDev": (".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue"),
-        "C": (".cpp", ".cc", ".h", ".c")
+    development_subdir= {
+        "python": [".py"],
+        "java": [".jar", ".class"],
+        "webdev": [".html5", ".html", ".htm", ".xhtml", ".js", ".css", ".scss", ".vue", ".ttf", ".woff", ".woff2"],
+        "c": [".cpp", ".cc", ".h", ".c"],
+        "xml": [".xml"]
     }
+
+    for item in directories:
+        directories[item] = directories[item] + [x.upper() for x in directories[item]]
+    for item in development_subdir:
+        development_subdir[item] = development_subdir[item] + [x.upper() for x in development_subdir[item]]
 
     try:
         create_folders(directories, directory_path)
-        create_folders(development_directories, str(os.path.join(directory_path, "Development")))
+        create_folders(development_subdir, str(os.path.join(directory_path, "development")))
 
-        
         organize_folders(directories, directory_path)
-        organize_folders(development_directories, str(os.path.join(directory_path, "Development")))
+        organize_folders(development_subdir, str(os.path.join(directory_path, "development")))
 
     except shutil.Error:
         print("There was an error trying to move an item to its destination folder")
