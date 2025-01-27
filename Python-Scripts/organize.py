@@ -94,7 +94,7 @@ if __name__ == '__main__':
         "audio": [".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p", ".mp3", ".msv", "ogg", "oga", ".raw", ".vox", ".wav", ".wma"],
         "plaintext": [".txt", ".in", ".out"],
         "executable": [".exe", ".pkg", ".deb", ".AppImage"],
-        "3d-models": [".obj", ".stl"],
+        "3d-models": [".obj", ".stl", ".3mf"],
         "torrents": [".torrent"]
     }
 
